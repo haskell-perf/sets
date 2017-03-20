@@ -18,6 +18,7 @@ test-suite space
                , containers
                , unordered-containers
                , packed-dawg
+               , bloomfilter
                , random
 
 benchmark time
@@ -30,6 +31,7 @@ benchmark time
                    , ghc-prim
                    , criterion
                    , deepseq
+                   , bloomfilter
                    , containers
                    , unordered-containers
                    , packed-dawg

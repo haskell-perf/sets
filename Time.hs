@@ -8,6 +8,7 @@ import           Control.DeepSeq
 import           Control.Monad
 import           Criterion.Main
 import           Criterion.Types
+import qualified Data.BloomFilter.Easy
 import qualified Data.DAWG.Packed
 import qualified Data.HashSet
 import qualified Data.IntSet
@@ -84,6 +85,26 @@ main = do
                Data.IntSet.member
            ])
     , bgroup
+        "Member Int (Randomized, false positive rate 0.1)"
+        (memberRandomized
+           [ Member
+               "Data.Set"
+               Data.Set.fromList
+               Data.Set.member
+           , Member
+               "Data.HashSet"
+               Data.HashSet.fromList
+               Data.HashSet.member
+           , Member
+               "Data.IntSet"
+               Data.IntSet.fromList
+               Data.IntSet.member
+           , Member
+               "Data.BloomFilter"
+               (Data.BloomFilter.Easy.easyList 0.1)
+               Data.BloomFilter.Easy.elem
+           ])
+    , bgroup
         "Member String (Randomized)"
         (memberRandomizedS
            [ MemberS
@@ -98,6 +119,26 @@ main = do
                "Data.DAWG.Packed"
                Data.DAWG.Packed.fromList
                Data.DAWG.Packed.member
+           ])
+    , bgroup
+        "Member String (Randomized, false positive rate 0.1)"
+        (memberRandomizedS
+           [ MemberS
+               "Data.Set"
+               Data.Set.fromList
+               Data.Set.member
+           , MemberS
+               "Data.HashSet"
+               Data.HashSet.fromList
+               Data.HashSet.member
+           , MemberS
+               "Data.DAWG.Packed"
+               Data.DAWG.Packed.fromList
+               Data.DAWG.Packed.member
+           , MemberS
+               "Data.BloomFilter"
+               (Data.BloomFilter.Easy.easyList 0.1)
+               Data.BloomFilter.Easy.elem
            ])
     , bgroup
         "FromList String (Monotonic)"

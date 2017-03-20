@@ -5,6 +5,7 @@
 module Main where
 
 import           Control.DeepSeq
+import qualified Data.BloomFilter.Easy
 import qualified Data.DAWG.Packed
 import qualified Data.HashSet
 import qualified Data.IntSet
@@ -17,6 +18,7 @@ main :: IO ()
 main =
   mainWith (do inserts
                fromlists
+               fromlistsSProb
                fromlistsS
                fromlistsSMonotonic)
 
@@ -38,6 +40,14 @@ fromlists =
      func "Data.Set.fromList     (1 million ints)" Data.Set.fromList elems
      func "Data.HashSet.fromList (1 million ints)" Data.HashSet.fromList elems
      func "Data.IntSet.fromList  (1 million ints)" Data.IntSet.fromList elems
+
+fromlistsSProb :: Weigh ()
+fromlistsSProb =
+  do let !elems =
+           force (map show (take 1000000 (randoms (mkStdGen 0) :: [Int])))
+     func "Data.Set.fromList              (1 million strings, no false positives)" Data.Set.fromList elems
+     func "Data.HashSet.fromList          (1 million strings, no false positives)" Data.HashSet.fromList elems
+     func "Data.BloomFilter.Easy.easyList (1 million strings, 0.1 false positive rate)" (Data.BloomFilter.Easy.easyList 0.1) elems
 
 
 fromlistsS :: Weigh ()
