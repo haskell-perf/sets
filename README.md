@@ -2,6 +2,11 @@
 
 Benchmarks for set data structures: hash maps, FSA's, etc.
 
+There is also a comparison with bloom filters, but note that this is a
+*probabilistic* data structure – you will get a certain amount of false
+positives when testing for membership. The other data structures are all
+non-probabilistic.
+
 ## Running
 
 For all benchmarks:
